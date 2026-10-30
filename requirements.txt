@@ -1,0 +1,8 @@
+numpy
+pandas
+scipy
+scikit-learn
+xgboost
+matplotlib
+joblib
+openpyxl        # optional, Excel versions of the tables

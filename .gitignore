@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Private data and trained models are not committed by default
+# (model .pkl files can execute code when loaded - share them via a release only if you trust the recipients)
+data/*.csv
+data/*.xlsx
+!data/example_*.csv
+models/
+
+# Generated results: recreate with run_pipeline.py. Figures are kept so the README can show them.
+results/*
+!results/figures/
