@@ -81,15 +81,24 @@ Resume with `--from 5`, run one step with `--only 8`, list the steps with `--lis
 
 All random seeds are fixed (`SEED` in `src/common.py`), so reruns reproduce the same numbers on the same library versions.
 
-## Limitations
+## Model Limitations and Reproducibility Notes
 
-* The data set is small, so performance estimates are noisy: a single test set of about 20 compounds can differ a lot from another
-  random split. Prefer the cross-validated results (steps 3 and 7) and the spread across splits (`extras/split_70_41.py`).
-* If the four descriptors were chosen using all compounds before the split, every score is somewhat optimistic.
-* Predictions for compounds outside the applicability domain are extrapolations and should not be used to rank compounds.
-* Models are meant for ranking and prioritisation; the typical error is of the order of one pEC50 unit on this kind of data.
-* Pickled models (`.pkl`) can execute code when loaded: load only files you trust, with the library versions that created them.
+The following considerations should be taken into account when interpreting or extending this QSAR workflow.
 
-## License and citation
+**Dataset size and variability
+**
+The dataset contains 111 compounds, with approximately 20 compounds in a typical test set. Consequently, performance metrics may vary substantially between different random train/test splits. Cross validated performance and performance across multiple random splits should therefore be considered alongside the results from a single test split.
 
-*Add a license file of your choice and your citation details here.*
+**Feature selection and data leakage**
+
+In the current workflow, descriptor selection was performed using the complete dataset before the final train/test partition. Consequently, information from compounds subsequently assigned to the test set may have influenced the selection of the final four descriptors. The reported test performance may therefore be somewhat optimistic and should not be interpreted as a completely independent estimate of model generalisation.
+
+For a more rigorous implementation, the dataset should first be divided into training and test sets, after which descriptor filtering and feature selection should be performed exclusively using the training data. The selected descriptors can then be applied unchanged to the independent test set. For cross validation, feature selection should similarly be performed within each training fold to prevent information leakage.
+
+**Applicability domain and extrapolation**
+
+Predictions for compounds that fall outside the chemical or descriptor space represented by the training dataset may constitute extrapolations and should be interpreted with caution. Applicability domain assessment should therefore be performed before using model predictions for compound ranking or prioritisation. Predictions outside the established domain should not be treated with the same confidence as predictions for compounds within the model domain.
+
+**Interpretation of predicted activity**
+
+The models are intended primarily for activity estimation, ranking and compound prioritisation rather than precise prediction of experimental pEC₅₀ values. Prediction errors of approximately one pEC₅₀ unit can be expected for datasets of this size and nature. Individual predictions should therefore not be interpreted as exact experimental values.
