@@ -86,6 +86,7 @@ All random seeds are fixed (`SEED` in `src/common.py`), so reruns reproduce the 
 The following considerations should be taken into account when interpreting or extending this QSAR workflow.
 
 **Dataset size and variability**
+
 The dataset contains 111 compounds, with approximately 20 compounds in a typical test set. Consequently, performance metrics may vary substantially between different random train/test splits. Cross validated performance and performance across multiple random splits should therefore be considered alongside the results from a single test split.
 
 **Feature selection and data leakage**
